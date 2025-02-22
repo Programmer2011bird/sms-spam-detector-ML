@@ -57,7 +57,7 @@ def yield_tokens(data_iter):
 vocab = build_vocab_from_iterator(yield_tokens(raw_dataset), min_freq=2, specials=["<unk>"]) # building the vocabulary
 vocab.set_default_index(vocab["<unk>"]) # setting the default to unknown tensor
 
-max_sentence_length = 50
+max_sentence_length = 32
 text_transform = torch.nn.Sequential(
     VocabTransform(vocab=vocab),
     ToTensor(),
