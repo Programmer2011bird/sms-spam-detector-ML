@@ -1,4 +1,5 @@
-from torch.nn import LSTM, Embedding, Linear
+from numpy import average
+from torch.nn import LSTM, Embedding, Linear, Sigmoid
 import torchtext
 import dataset
 import torch
@@ -33,6 +34,7 @@ for texts, labels in dataloader:
     
     out = model(texts)
     print(out)
-
+    print(average(torch.detach(torch.sigmoid(out)).numpy()))
     break
+
 
