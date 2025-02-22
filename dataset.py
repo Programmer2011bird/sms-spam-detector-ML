@@ -83,6 +83,8 @@ def dataset(BATCH_SIZE: int = 32):
         print("Labels:", labels)
         break
 
+    return (dataloader, vocab)
+
 
 if __name__ == "__main__":
     # process_raw_txt("./data/SMSSpamCollection", "./data/SMSSpam.csv")
