@@ -28,13 +28,13 @@ OUTPUT_DIM = 1
 
 model = SMSSpamDetectorModel(VOCAB_SIZE, EMBEDDING_DIM, HIDDEN_DIM, OUTPUT_DIM)
 
-for texts, labels in dataloader:
-    print("Batch shape:", texts.shape)  # (batch_size, seq_length)
-    print("Labels:", labels)
-    
-    out = model(texts)
-    print(out)
-    print(average(torch.detach(torch.sigmoid(out)).numpy()))
-    break
+# for texts, labels in dataloader:
+    # print("Batch shape:", texts.shape)  # (batch_size, seq_length)
+    # print("Labels:", labels)
+    # 
+    # out = model(texts)
+    # print(out)
+    # print(average(torch.detach(torch.sigmoid(out)).numpy()))
+    # break
 
 

@@ -30,7 +30,34 @@ def train_step(EPOCHS: int):
 
         torch.save(model.model.state_dict(), "model.pth")
 
+def clean_text(text):
+    text = dataset.clean_text(text)
+    text = list(text)
+    text = dataset.text_transform(text)
+
+    return text
+
+def use_step(IN_FILE):
+    model.model.load_state_dict(torch.load(IN_FILE, map_location=torch.device("cpu"), weights_only=True))
+
+    INPUT = "Work as a data entry clerk and earn $300/day. Click here to apply: [link]."
+    INPUT = clean_text(INPUT)
+
+    with torch.inference_mode():
+        out = model.model(INPUT).squeeze(0)
+        out = torch.sigmoid(out).squeeze(-1)
+        probabilities = torch.sigmoid(out)
+        probabilities = torch.round(probabilities)
+
+        print("0 = ham")
+        print("1 = spam")
+        print(out)
+        print("Probabilities:", probabilities)
+        print("Probabilities:", torch.argmax(probabilities))
+
+
 
 if __name__ == "__main__":
-    train_step(EPOCHS=1)
+    # train_step(EPOCHS=1)
+    use_step("model.pth")
 
