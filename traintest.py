@@ -9,6 +9,7 @@ LOSS_FN = torch.nn.BCELoss()
 
 def train_step(EPOCHS: int):
     dataloader, _ = dataset.dataset()
+    print("length of the dataset", len(dataloader))
     
     for epoch in tqdm(range(EPOCHS)):
         OPTIMIZER.zero_grad()
@@ -24,8 +25,6 @@ def train_step(EPOCHS: int):
             loss += LOSS.item()
             OPTIMIZER.step()
             
-            print("batch :", batch)
-
         print("epoch :", epoch)
         print("epoch loss :", loss)
 
@@ -34,3 +33,4 @@ def train_step(EPOCHS: int):
 
 if __name__ == "__main__":
     train_step(EPOCHS=1)
+

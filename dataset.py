@@ -76,12 +76,13 @@ def collate_batch(batch):
     return torch.stack(texts), torch.tensor(labels, dtype=torch.long) # torch.stack because the texts list is a "stack" of tensors in a list
 
 def dataset(BATCH_SIZE: int = 32):
-    dataloader = DataLoader(raw_dataset, BATCH_SIZE, collate_fn=collate_batch)
+    print("raw dataset length", len(raw_dataset))
+    dataloader = DataLoader(raw_dataset, BATCH_SIZE, collate_fn=collate_batch, drop_last=True, shuffle=True)
 
-    for texts, labels in dataloader:
-        print("Batch shape:", texts.shape)  # (batch_size, seq_length)
-        print("Labels:", labels)
-        break
+    # for texts, labels in dataloader:
+        # print("Batch shape:", texts.shape)  # (batch_size, seq_length)
+        # print("Labels:", labels)
+        # break
 
     return (dataloader, vocab)
 

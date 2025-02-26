@@ -22,8 +22,8 @@ class SMSSpamDetectorModel(torch.nn.Module):
 
 dataloader, VOCAB = dataset.dataset()
 VOCAB_SIZE = len(VOCAB)
-EMBEDDING_DIM = 100
-HIDDEN_DIM = 250
+EMBEDDING_DIM = 400
+HIDDEN_DIM = 800
 OUTPUT_DIM = 1
 
 model = SMSSpamDetectorModel(VOCAB_SIZE, EMBEDDING_DIM, HIDDEN_DIM, OUTPUT_DIM)
