@@ -9,13 +9,18 @@ import re
 
 
 def clean_text(text: str) -> str:
+    if not isinstance(text, str):  # Handle non-string inputs
+        return ""
+
     text = re.sub(r"[^a-zA-Z\s]", "", text) # filtering all the shit we dont need
     return text.lower()
 
 def process_raw_txt(IN_file: str, OUT_file: str) -> None:
     file_path: str = IN_file
     df: pd.DataFrame = pd.read_csv(file_path, sep="\t", header=None, names=["label", "text"]) # sep="/t" replaces labels and texts that are seperated by a tab
-    df["text"].apply(clean_text) # applying the filter
+    df["text"] = df["text"].apply(clean_text) # applying the filter
+    df["text"] = df["text"].fillna("")
+    df = df.dropna(subset=["text"])
 
     with open(OUT_file, "w+") as file:
         file.write(df.to_csv(index=False))
@@ -25,13 +30,15 @@ class SMSSpamDataset(Dataset):
         super().__init__()
         self.df = pd.read_csv(IN_file)
         self.tokenizer = get_tokenizer("basic_english")
-        
+
     def __len__(self) -> int:
         return len(self.df)
 
     def __getitem__(self, index):
         text = self.df.iloc[index]["text"] # getting the text of a specific index
         label = self.df.iloc[index]["label"] # getting the label of a specific index
+        if not isinstance(text, str):  # Handle non-string text
+            text = ""
         return self.tokenizer(text), label
 
 class TruncateAndPad(torch.nn.Module):
@@ -45,10 +52,10 @@ class TruncateAndPad(torch.nn.Module):
             x = x[:self.max_length]  # Truncate
         else:
             x = pad(x, (0, self.max_length - x.size(0)), value=self.pad_value) # extra cushion for the comfort of our values :3
-        
+
         return x
 
-raw_dataset = SMSSpamDataset("./data/SMSSpam.csv")
+raw_dataset = SMSSpamDataset("SMSSpam.csv")
 
 def yield_tokens(data_iter):
     for tokens, _ in data_iter:

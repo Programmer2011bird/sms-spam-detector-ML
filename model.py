@@ -17,7 +17,7 @@ class SMSSpamDetectorModel(torch.nn.Module):
         self.embedded_text = self.embedding(x)
         _, (_, hidden) = self.lstm(self.embedded_text)
 
-        return self.fc(hidden)
+        return self.fc(hidden[-1])
 
 
 dataloader, VOCAB = dataset.dataset()
